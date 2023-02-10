@@ -87,7 +87,7 @@ const fileupload = document.querySelector("#file");
 const text = document.querySelector("#text");
 const handleFileUpload = async () => {
   // console.log(fileupload.files);
-  const response = await fetch("http://localhost:3000/uploadfile", {
+  const response = await fetch("https://fileupload-we7o.onrender.com", {
     method: "POST",
     // body: JSON.stringify({ test: "hello" }),
     // body: fileupload.files[0],
