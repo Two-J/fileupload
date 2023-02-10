@@ -35,13 +35,13 @@ const sever = http.createServer((req, res) => {
       res.end();
     });
   } else if (req.url === "/data") {
-    res.writeHead(200, { "Content-Type": "application/jason" });
+    res.writeHead(200, { "Content-Type": "application/json" });
     res.write(JSON.stringify({ name: "nyeinminhtet" }));
     res.end();
   } else if (req.url === "/users") {
     const method = req.method;
     if (method === "GET") {
-      res.writeHead(200, { "Content-Type": "application/jason" });
+      res.writeHead(200, { "Content-Type": "application/json" });
       res.write(JSON.stringify(users));
       res.end();
     } else if (method === "POST") {
@@ -53,7 +53,7 @@ const sever = http.createServer((req, res) => {
         const newUser = JSON.parse(newData);
         users.push(newUser);
         // console.log(data);
-        res.writeHead(200, { "Content-Type": "application/jason" });
+        res.writeHead(200, { "Content-Type": "application/json" });
         res.write(JSON.stringify(users));
         res.end();
       });
@@ -69,7 +69,7 @@ const sever = http.createServer((req, res) => {
         if (hasEmail) {
           hasEmail.name = updateUser.name;
         }
-        res.writeHead(200, { "Content-Type": "application/jason" });
+        res.writeHead(200, { "Content-Type": "application/json" });
         res.write(JSON.stringify(users));
         res.end();
       });
@@ -86,31 +86,40 @@ const sever = http.createServer((req, res) => {
           const indexNumber = users.indexOf(hasEmail);
           users.splice(indexNumber, 1);
         }
-        res.writeHead(200, { "Content-Type": "application/jason" });
+        res.writeHead(200, { "Content-Type": "application/json" });
         res.write(JSON.stringify(users));
         res.end();
       });
-    } else if (req.url === "/uploadfile") {
-      res.writeHead(200, { "Content-Type": "application/jason" });
-      console.log("that work");
-      console.log(req);
-      res.write(JSON.stringify({ message: "all fine bro" }));
-      res.end();
-
-      // let data = "";
-      // req.on("data", (chunk) => {
-      //   data += chunk;
-      // });
-      // req.on("end", () => {
-      //   fs.writeFile("fromFrontEnd.txt", JSON.parse(data), () => {
-      //     console.log(data);
-      //   });
-      // });
-    } else {
-      res.writeHead(500);
-      res.write("<h1>unkonw</h1>");
-      res.end();
     }
+  } else if (req.url === "/uploadfile") {
+    // let i = 1;
+    // const fileExt = req.headers["content-type"];
+    // const fileName = fileExt.split("/")[0];
+    // const fileType = fileExt.split("/")[1];
+    // const writeToName = `${fileName}${i}.${fileType}`;
+
+    // const writeStream = fs.createWriteStream(writeToName);
+    // req.pipe(writeStream);
+    // res.writeHead(200, { "Content-Type": "application/json" });
+    // res.write(JSON.stringify({ message: "all fine bro" }));
+    // i = i + 1;
+    // res.end();
+    let data = "";
+    req.on("data", (chunk) => {
+      data += chunk;
+    });
+    req.on("end", () => {
+      fs.writeFile("fromFrontEnd.txt", JSON.stringify(data), () => {
+        // console.log(data);
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.write(JSON.stringify({ message: "all fine bro" }));
+        res.end();
+      });
+    });
+  } else {
+    res.writeHead(500);
+    res.write("<h1>unkonw</h1>");
+    res.end();
   }
 });
 sever.listen(3000, () => {

@@ -84,13 +84,14 @@
 //   };
 // });
 const fileupload = document.querySelector("#file");
-
+const text = document.querySelector("#text");
 const handleFileUpload = async () => {
   // console.log(fileupload.files);
   const response = await fetch("http://localhost:3000/uploadfile", {
     method: "POST",
     // body: JSON.stringify({ test: "hello" }),
-    body: fileupload.files[0],
+    // body: fileupload.files[0],
+    body: JSON.stringify(text.value),
   });
   console.log(await response.json());
 };
